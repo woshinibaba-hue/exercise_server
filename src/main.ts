@@ -1,3 +1,4 @@
+import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -7,6 +8,9 @@ async function bootstrap() {
 
   // 应用全局管道验证器
   app.useGlobalPipes(new ValidationPipe());
+
+  // 用于全局错误过滤器
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(3000);
 }
