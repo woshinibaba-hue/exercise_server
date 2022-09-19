@@ -10,6 +10,6 @@ export class UserController {
   // 注册
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
-    return registerDto;
+    return await this.userService.register(registerDto);
   }
 }
