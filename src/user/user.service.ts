@@ -5,9 +5,14 @@ import { RegisterDto } from './dto/register.dto';
 import { md5Password } from '@/utils/handle_pwd';
 import { LoginDto } from './dto/login.dto';
 
+import { JwtService } from '@nestjs/jwt';
+
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly jwt: JwtService,
+  ) {}
 
   // 注册
   async register(registerDto: RegisterDto) {
@@ -31,7 +36,12 @@ export class UserService {
       return new NotFoundException('账号或密码错误~');
     }
 
+    const token = await this.jwt.signAsync({ id: user.id });
     delete user.password;
-    return user;
+
+    return {
+      ...user,
+      token,
+    };
   }
 }
