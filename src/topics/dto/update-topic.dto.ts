@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateTopicDto } from './create-topic.dto';
-
-export class UpdateTopicDto extends PartialType(CreateTopicDto) {}
+export class UpdateTopicDto {
+  title: string;
+  hard?: number;
+  tagsId: number;
+  usersId: number;
+  answer: string;
+}

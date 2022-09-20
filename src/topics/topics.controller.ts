@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   UsePipes,
+  Query,
 } from '@nestjs/common';
 import { users } from '@prisma/client';
 import { CreateTopicDto } from './dto/create-topic.dto';
@@ -27,8 +28,8 @@ export class TopicsController {
   }
 
   @Get()
-  findAll() {
-    return this.topicsService.findAll();
+  findAll(@Query() query: { limit?: number; page?: number }) {
+    return this.topicsService.findAll(query);
   }
 
   @Get(':id')

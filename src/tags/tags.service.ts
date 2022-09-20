@@ -1,3 +1,4 @@
+import { isMove } from '@/utils/isMove';
 import { Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
@@ -15,7 +16,6 @@ export class TagsService {
 
   async findAll({ limit = 10, page = 1 }: { limit?: number; page?: number }) {
     const total = await this.prisma.tags.count();
-    const maxPage = Math.ceil(total / limit);
 
     const tags = await this.prisma.tags.findMany({
       skip: (page - 1) * limit,
@@ -25,7 +25,7 @@ export class TagsService {
     return {
       tags,
       total,
-      isMove: maxPage > page,
+      isMove: isMove(total, limit, page),
     };
   }
 

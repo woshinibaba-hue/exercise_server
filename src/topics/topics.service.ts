@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { UpdateTopicDto } from './dto/update-topic.dto';
 
+import { isMove } from '@/utils/isMove';
+
 @Injectable()
 export class TopicsService {
   constructor(private prisma: PrismaService) {}
@@ -18,16 +20,46 @@ export class TopicsService {
     });
   }
 
-  findAll() {
-    return `This action returns all topics`;
+  async findAll({ limit = 10, page = 1 }: { limit?: number; page?: number }) {
+    const total = await this.prisma.topics.count();
+    const topics = await this.prisma.topics.findMany({
+      skip: (page - 1) * limit,
+      take: +limit,
+    });
+
+    return {
+      total,
+      topics,
+      isMove: isMove(total, limit, page),
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} topic`;
+  async findOne(id: number) {
+    return await this.prisma.topics.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateTopicDto: UpdateTopicDto) {
-    return `This action updates a #${id} topic`;
+  async update(id: number, updateTopicDto: UpdateTopicDto) {
+    const old = await this.prisma.topics.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return await this.prisma.topics.update({
+      where: {
+        id,
+      },
+      data: {
+        title: updateTopicDto.title ?? old.title,
+        answer: updateTopicDto.answer ?? old.answer,
+        hard: +updateTopicDto.hard ?? +old.hard,
+        tagsId: updateTopicDto.tagsId ?? +old.tagsId,
+      },
+    });
   }
 
   async remove(id: number) {
