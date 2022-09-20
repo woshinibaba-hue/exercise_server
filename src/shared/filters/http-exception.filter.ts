@@ -19,7 +19,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
       code = 500;
 
     if (exception instanceof HttpException) {
-      message = (exception.getResponse() as any).message ?? exception.message;
+      if (exception.getStatus() !== 401) {
+        message = (exception.getResponse() as any).message ?? exception.message;
+      } else {
+        message = 'token 失效~';
+      }
       code = exception.getStatus();
     }
 
