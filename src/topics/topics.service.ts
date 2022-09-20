@@ -25,6 +25,10 @@ export class TopicsService {
     const topics = await this.prisma.topics.findMany({
       skip: (page - 1) * limit,
       take: +limit,
+      include: {
+        users: true,
+        tags: true,
+      },
     });
 
     return {
@@ -38,6 +42,10 @@ export class TopicsService {
     return await this.prisma.topics.findUnique({
       where: {
         id,
+      },
+      include: {
+        tags: true,
+        users: true,
       },
     });
   }
