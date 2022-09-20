@@ -9,8 +9,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   // 注册
-  // @UseGuards(AuthGuard('jwt')) // 使用jwt验证策略
-  // @Auth() // 使用聚合装饰器验证jwt
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     return await this.userService.register(registerDto);

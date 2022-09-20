@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
+import { TagsModule } from './tags/tags.module';
 
 @Global()
 @Module({
@@ -11,6 +12,7 @@ import { UserModule } from './user/user.module';
     }),
     PrismaModule,
     UserModule,
+    TagsModule,
   ],
   controllers: [],
   providers: [],

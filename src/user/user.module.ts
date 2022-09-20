@@ -18,7 +18,6 @@ import { UserService } from './user.service';
     }),
   ],
   controllers: [UserController],
-  // 将jwt验证策略添加到提供者 JwtStrategy
   providers: [UserService],
 })
 export class UserModule {}

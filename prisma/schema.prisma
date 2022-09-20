@@ -21,3 +21,12 @@ model users {
   createAt DateTime? @default(now())
   updateAt DateTime? @updatedAt
 }
+
+// tags
+model tags {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique @db.VarChar(15)
+  cover    String?   @db.VarChar(255)
+  createAt DateTime? @default(now())
+  updateAt DateTime? @updatedAt
+}

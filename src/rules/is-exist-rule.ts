@@ -27,7 +27,7 @@ export function IsExistRule(
         async validate(value: any) {
           const prisma = new PrismaClient();
 
-          const res = await prisma.users.findFirst({
+          const res = await prisma[tableName].findFirst({
             where: {
               [propertyName]: value,
             },
