@@ -30,3 +30,13 @@ model tags {
   createAt DateTime? @default(now())
   updateAt DateTime? @updatedAt
 }
+
+// topics
+model topics {
+  id       Int       @id @default(autoincrement())
+  title    String    @unique @db.VarChar(225)
+  hard     Int?      @default(1)
+  answer   String    @db.LongText
+  createAt DateTime? @default(now())
+  updateAt DateTime? @updatedAt
+}
