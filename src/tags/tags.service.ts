@@ -13,8 +13,20 @@ export class TagsService {
     });
   }
 
-  findAll() {
-    return `This action returns all tags`;
+  async findAll({ limit = 10, page = 1 }: { limit?: number; page?: number }) {
+    const total = await this.prisma.tags.count();
+    const maxPage = Math.ceil(total / limit);
+
+    const tags = await this.prisma.tags.findMany({
+      skip: (page - 1) * limit,
+      take: +limit,
+    });
+
+    return {
+      tags,
+      total,
+      isMove: maxPage > page,
+    };
   }
 
   findOne(id: number) {

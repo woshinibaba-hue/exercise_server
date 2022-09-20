@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
@@ -24,9 +25,10 @@ export class TagsController {
     return await this.tagsService.create(createTagDto);
   }
 
+  // 查询分类
   @Get()
-  findAll() {
-    return this.tagsService.findAll();
+  findAll(@Query() query: { limit?: number; page?: number }) {
+    return this.tagsService.findAll(query);
   }
 
   @Get(':id')
