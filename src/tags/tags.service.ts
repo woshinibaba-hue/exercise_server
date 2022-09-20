@@ -29,15 +29,37 @@ export class TagsService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
+  async findOne(id: number) {
+    return await this.prisma.tags.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
+  async update(id: number, updateTagDto: UpdateTagDto) {
+    const oldTag = await this.prisma.tags.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return await this.prisma.tags.update({
+      where: {
+        id,
+      },
+      data: {
+        name: updateTagDto.name || oldTag.name,
+        cover: updateTagDto.cover || oldTag.cover,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tag`;
+  async remove(id: number) {
+    return await this.prisma.tags.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
