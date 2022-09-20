@@ -1,11 +1,21 @@
+import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { UpdateTopicDto } from './dto/update-topic.dto';
 
 @Injectable()
 export class TopicsService {
-  create(createTopicDto: CreateTopicDto) {
-    return 'This action adds a new topic';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createTopicDto: CreateTopicDto) {
+    return await this.prisma.topics.create({
+      data: {
+        ...createTopicDto,
+        hard: +createTopicDto.hard,
+        tagsId: +createTopicDto.tagsId,
+        usersId: +createTopicDto.usersId,
+      },
+    });
   }
 
   findAll() {
@@ -20,7 +30,11 @@ export class TopicsService {
     return `This action updates a #${id} topic`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} topic`;
+  async remove(id: number) {
+    return await this.prisma.topics.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

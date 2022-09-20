@@ -25,6 +25,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message = 'token 失效~';
       }
       code = exception.getStatus();
+    } else {
+      console.log(exception);
     }
 
     const errData = {

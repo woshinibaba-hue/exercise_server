@@ -5,9 +5,9 @@ import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-  constructor(private readonly configServer: ConfigService) {
+  constructor(private readonly configServer?: ConfigService) {
     super(
-      configServer.get('NODE_ENV') === 'production'
+      configServer?.get('NODE_ENV') === 'production'
         ? {
             log: ['query'],
           }
