@@ -17,13 +17,13 @@ export class TagsService {
   async findAll({ limit = 10, page = 1 }: { limit?: number; page?: number }) {
     const total = await this.prisma.tags.count();
 
-    const tags = await this.prisma.tags.findMany({
+    const data = await this.prisma.tags.findMany({
       skip: (page - 1) * limit,
       take: +limit,
     });
 
     return {
-      tags,
+      data,
       total,
       isMove: isMove(total, limit, page),
     };

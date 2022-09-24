@@ -22,7 +22,7 @@ export class TopicsService {
 
   async findAll({ limit = 10, page = 1 }: { limit?: number; page?: number }) {
     const total = await this.prisma.topics.count();
-    const topics = await this.prisma.topics.findMany({
+    const data = await this.prisma.topics.findMany({
       skip: (page - 1) * limit,
       take: +limit,
       include: {
@@ -33,7 +33,7 @@ export class TopicsService {
 
     return {
       total,
-      topics,
+      data,
       isMove: isMove(total, limit, page),
     };
   }
@@ -55,6 +55,13 @@ export class TopicsService {
       where: {
         id,
       },
+    });
+
+    console.log({
+      title: updateTopicDto.title ?? old.title,
+      answer: updateTopicDto.answer ?? old.answer,
+      hard: +updateTopicDto.hard ?? +old.hard,
+      tagsId: updateTopicDto.tagsId ?? +old.tagsId,
     });
 
     return await this.prisma.topics.update({

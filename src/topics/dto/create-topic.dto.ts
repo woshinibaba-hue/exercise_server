@@ -6,7 +6,12 @@ export class CreateTopicDto {
   @IsExistRule('topics', { message: '该题目已存在' })
   title: string;
 
+  content?: string;
+
   hard?: number;
+
+  @IsNotEmpty({ message: '考点不能为空~' })
+  centre: string;
 
   @IsNotEmpty({ message: '当前题目分类不能为空~' })
   tagsId: number;

@@ -8,19 +8,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 用户
 model users {
   id       Int       @id @default(autoincrement())
   username String    @unique @db.VarChar(15)
   password String    @db.VarChar(255)
   avatar   String?   @db.VarChar(255)
-  topics   topics[]
   referral String?   @default("这个人好懒，什么都没留下~") @db.VarChar(255)
   createAt DateTime? @default(now())
   updateAt DateTime? @updatedAt
+  topics   topics[]
 }
 
-// 分类
 model tags {
   id       Int       @id @default(autoincrement())
   name     String    @unique @db.VarChar(15)
@@ -30,16 +28,20 @@ model tags {
   topics   topics[]
 }
 
-// 题目
 model topics {
   id       Int       @id @default(autoincrement())
   title    String    @unique @db.VarChar(225)
-  hard     Int?      @default(1)
+  content  String?   @db.LongText
+  hard     Float?    @default(1)
   answer   String    @db.LongText
   tagsId   Int?
+  usersId  Int?
+  centre   String    @db.VarChar(255)
   createAt DateTime? @default(now())
   updateAt DateTime? @updatedAt
   tags     tags?     @relation(fields: [tagsId], references: [id], onDelete: Cascade)
   users    users?    @relation(fields: [usersId], references: [id])
-  usersId  Int?
+
+  @@index([tagsId], map: "topics_tagsId_fkey")
+  @@index([usersId], map: "topics_usersId_fkey")
 }

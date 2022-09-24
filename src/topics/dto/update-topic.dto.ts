@@ -4,4 +4,5 @@ export class UpdateTopicDto {
   tagsId: number;
   usersId: number;
   answer: string;
+  content: string;
 }
